@@ -13,6 +13,8 @@ public interface AutoCompleteFormTextFieldMvvm {
         void setValue(String value);
 
         void setAutoCompleteAdapter(ArrayAdapter<String> adapter);
+
+        void filter();
     }
 
     interface ViewModel {

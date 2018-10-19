@@ -7,10 +7,11 @@ import android.widget.Filterable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
-    private ArrayList<String> resultList;
+    private List<String> resultList = new ArrayList<>();
     private String[] data;
 
     public CustomAutoCompleteAdapter(Context context, int textViewResourceId, String[] data) {
@@ -52,6 +53,5 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
     public void setData(String[] data) {
         this.data = data;
-        notifyDataSetChanged();
     }
 }

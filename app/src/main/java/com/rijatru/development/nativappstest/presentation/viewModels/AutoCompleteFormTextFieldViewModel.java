@@ -49,6 +49,7 @@ public class AutoCompleteFormTextFieldViewModel extends BaseViewModel implements
 
     public void setAutoCompleteData(String[] data) {
         autoCompleteAdapter.setData(data);
+        view.filter();
     }
 
     @Override

@@ -25,10 +25,11 @@
                 android:id="@+id/municipality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_medium"
+                android:layout_margin="@dimen/dimen_medium"
                 app:editable="false"
                 app:hint="@string/search_hint"
                 app:mandatory="true"
+                android:textColor="@color/white"
                 app:value="@={viewModel.searchQuery}" />
 
         </FrameLayout>

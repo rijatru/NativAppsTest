@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -13,18 +14,25 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.rijatru.development.nativappstest.AppImplementation;
 import com.rijatru.development.nativappstest.R;
 import com.rijatru.development.nativappstest.databinding.AutoCompleteFormTextBinding;
+import com.rijatru.development.nativappstest.dependencyInjection.component.DaggerViewsComponent;
+import com.rijatru.development.nativappstest.dependencyInjection.component.ViewsComponent;
+import com.rijatru.development.nativappstest.logic.Bus;
 import com.rijatru.development.nativappstest.presentation.viewModels.factories.AppViewModelsFactory;
+import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewModelsFactory;
 import com.rijatru.development.nativappstest.presentation.viewModels.interfaces.AutoCompleteFormTextFieldMvvm;
 import com.rijatru.development.nativappstest.presentation.views.adapters.TextWatcherAdapter;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-public class AutoCompleteFormTextField extends BaseAppView implements AutoCompleteFormTextFieldMvvm.View {
+public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView implements AutoCompleteFormTextFieldMvvm.View {
 
     public static final String FIELD_TYPE_NUMBER = "number";
     public static final String FIELD_TYPE_EMAIL = "email";
@@ -39,6 +47,12 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
     private AutoCompleteFormTextFieldMvvm.ViewModel viewModel;
     private TextWatcher textChangedListener;
     private Subject<String> subject = PublishSubject.create();
+
+    @Inject
+    ViewModelsFactory viewModelFactory;
+
+    @Inject
+    Bus bus;
 
     public AutoCompleteFormTextField(Context context) {
         super(context);
@@ -89,9 +103,13 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
 
     protected void init(Context context) {
         if (!isInEditMode()) {
-            getComponent().inject(this);
+
+            ViewsComponent component = DaggerViewsComponent.builder().appComponent(AppImplementation.getApp().getAppComponent()).build();
+            component.inject(this);
+
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            binding = DataBindingUtil.inflate(inflater, R.layout.auto_complete_form_text, this, true);
+            binding = AutoCompleteFormTextBinding.inflate(inflater);
+
             viewModel = (AutoCompleteFormTextFieldMvvm.ViewModel) viewModelFactory.getViewModel(this, AppViewModelsFactory.AUTO_COMPLETE_FORM_TEXT_FIELD_VIEW_MODEL);
             viewModel.setHint(hint);
             binding.setViewModel(viewModel);
@@ -109,9 +127,9 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
                 }
             }
         };
-        binding.textField.addTextChangedListener(textChangedListener);
+        addTextChangedListener(textChangedListener);
 
-        binding.textField.setOnEditorActionListener((v, actionId, event) -> {
+        setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard();
                 return true;
@@ -156,15 +174,15 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
 
     @Override
     protected void onDetachedFromWindow() {
-        binding.textField.removeTextChangedListener(textChangedListener);
+        removeTextChangedListener(textChangedListener);
         textChangedListener = null;
         super.onDetachedFromWindow();
     }
 
     @Override
     public void setAutoCompleteAdapter(ArrayAdapter<String> adapter) {
-        binding.textField.setThreshold(1);
-        binding.textField.setAdapter(adapter);
+        setThreshold(1);
+        setAdapter(adapter);
     }
 
     public void setData(String[] municipalitiesArray) {
@@ -179,5 +197,21 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
     private void initSearchSubject() {
         subject.debounce(500, TimeUnit.MILLISECONDS)
                 .subscribe(viewModel::searchMovies);
+    }
+
+    public void hideKeyboard() {
+        //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        //View view = getContext().getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        //if (view == null) {
+        //   view = new View(getActivity());
+        // }
+        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void filter() {
+        performFiltering("", 0);
     }
 }
