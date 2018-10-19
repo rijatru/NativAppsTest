@@ -34,20 +34,13 @@ public class AutoCompleteFormTextFieldViewModel extends BaseViewModel implements
         disposables.add(apiManager.getSearchMoviesObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(searchMoviesResponse -> {
-                    setAutoCompleteData(new String[0]);
                     if (searchMoviesResponse != null && searchMoviesResponse.search != null) {
-                        List<String> titles = new ArrayList<>();
-                        for (Search search : searchMoviesResponse.search) {
-                            titles.add(search.title);
-                        }
-                        String[] autoCompleteData = new String[titles.size()];
-                        autoCompleteData = titles.toArray(autoCompleteData);
-                        setAutoCompleteData(autoCompleteData);
+                        setAutoCompleteData(searchMoviesResponse.search);
                     }
                 }).subscribe());
     }
 
-    public void setAutoCompleteData(String[] data) {
+    public void setAutoCompleteData(List<Search> data) {
         autoCompleteAdapter.setData(data);
         view.filter();
     }
@@ -78,5 +71,10 @@ public class AutoCompleteFormTextFieldViewModel extends BaseViewModel implements
     @Override
     public void searchMovies(String searchQuery) {
         apiManager.searchMovies(searchQuery);
+    }
+
+    @Override
+    public Search getItemAt(int position) {
+        return autoCompleteAdapter.getObjectAt(position);
     }
 }

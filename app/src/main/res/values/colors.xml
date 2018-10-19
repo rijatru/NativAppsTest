@@ -6,4 +6,6 @@
     <color name="white">#FFFFFF</color>
     <color name="formTextFieldOutlineColor">#B2B9C0</color>
     <color name="formTextFieldTextColor">#7D7D7D</color>
+    <color name="movieTitle">#99000000</color>
+    <color name="movieYear">#272727</color>
 </resources>

@@ -26,14 +26,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_medium"
-                app:editable="false"
                 app:hint="@string/search_hint"
                 app:mandatory="true"
-                android:textColor="@color/white"
-                app:value="@={viewModel.searchQuery}" />
+                android:textColor="@color/white" />
 
         </FrameLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/photo"
+                android:transitionName="photo"
+                android:layout_width="300px"
+                android:layout_height="450px"
+                android:scaleType="centerCrop"
+                android:layout_margin="@dimen/dimen_medium"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                app:app_photo="@{viewModel.search.poster}" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/photo"
+                android:layout_marginEnd="@dimen/dimen_medium"
+                android:fontFamily="@font/roboto"
+                android:text="@{viewModel.search.title}"
+                android:layout_toEndOf="@+id/photo"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/movieTitle"
+                android:textSize="@dimen/text_huge" />
+
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_medium_s"
+                android:layout_marginEnd="@dimen/dimen_medium"
+                android:layout_alignStart="@+id/title"
+                android:layout_below="@+id/title"
+                android:fontFamily="@font/roboto"
+                android:text="@{viewModel.search.year}"
+                android:textColor="@color/movieYear"
+                android:textSize="@dimen/text_medium" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </layout>

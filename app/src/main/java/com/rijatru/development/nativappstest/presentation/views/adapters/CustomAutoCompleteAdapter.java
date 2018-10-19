@@ -5,14 +5,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.rijatru.development.nativappstest.data.api.model.search.get.Search;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
-    private List<String> resultList = new ArrayList<>();
-    private String[] data;
+    private List<Search> resultList = new ArrayList<>();
 
     public CustomAutoCompleteAdapter(Context context, int textViewResourceId, String[] data) {
         super(context, textViewResourceId);
@@ -25,7 +26,7 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
     @Override
     public String getItem(int index) {
-        return resultList.get(index);
+        return resultList.get(index).title;
     }
 
     @Override
@@ -34,7 +35,6 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                resultList = new ArrayList<>(Arrays.asList(data));
                 filterResults.values = resultList;
                 filterResults.count = resultList.size();
                 return filterResults;
@@ -51,7 +51,11 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
         };
     }
 
-    public void setData(String[] data) {
-        this.data = data;
+    public void setData(List<Search> data) {
+        this.resultList = data;
+    }
+
+    public Search getObjectAt(int position) {
+        return resultList.get(position);
     }
 }

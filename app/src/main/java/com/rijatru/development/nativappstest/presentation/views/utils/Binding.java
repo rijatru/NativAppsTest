@@ -4,7 +4,6 @@ import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.text.Editable;
 import android.widget.ImageView;
 
@@ -42,8 +41,8 @@ public class Binding {
     }
 
     @BindingAdapter({"app_photo"})
-    public static void setImageUrl(ImageView imageView, final Uri uri) {
-        Picasso.get().load(uri)
+    public static void setImageUrl(ImageView imageView, final String url) {
+        Picasso.get().load(url)
                 .config(Bitmap.Config.RGB_565)
                 .fit()
                 .centerCrop()

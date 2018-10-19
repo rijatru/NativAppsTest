@@ -3,10 +3,8 @@ package com.rijatru.development.nativappstest.presentation.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.databinding.DataBindingUtil;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,14 +14,15 @@ import android.widget.TextView;
 
 import com.rijatru.development.nativappstest.AppImplementation;
 import com.rijatru.development.nativappstest.R;
+import com.rijatru.development.nativappstest.data.api.model.search.get.Search;
 import com.rijatru.development.nativappstest.databinding.AutoCompleteFormTextBinding;
 import com.rijatru.development.nativappstest.dependencyInjection.component.DaggerViewsComponent;
 import com.rijatru.development.nativappstest.dependencyInjection.component.ViewsComponent;
-import com.rijatru.development.nativappstest.logic.Bus;
 import com.rijatru.development.nativappstest.presentation.viewModels.factories.AppViewModelsFactory;
 import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewModelsFactory;
 import com.rijatru.development.nativappstest.presentation.viewModels.interfaces.AutoCompleteFormTextFieldMvvm;
 import com.rijatru.development.nativappstest.presentation.views.adapters.TextWatcherAdapter;
+import com.rijatru.development.nativappstest.presentation.views.interfaces.SearchResultsListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,25 +33,16 @@ import io.reactivex.subjects.Subject;
 
 public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView implements AutoCompleteFormTextFieldMvvm.View {
 
-    public static final String FIELD_TYPE_NUMBER = "number";
-    public static final String FIELD_TYPE_EMAIL = "email";
-    public static final String FIELD_TYPE_PASSWORD = "password";
-    private String fieldType = "";
     private String hint;
-    private boolean editable = true;
-    private boolean isMandatory = false;
-    private boolean mandatoryAlertOn = false;
 
     protected AutoCompleteFormTextBinding binding;
     private AutoCompleteFormTextFieldMvvm.ViewModel viewModel;
     private TextWatcher textChangedListener;
     private Subject<String> subject = PublishSubject.create();
+    private SearchResultsListener searchResultsListener;
 
     @Inject
     ViewModelsFactory viewModelFactory;
-
-    @Inject
-    Bus bus;
 
     public AutoCompleteFormTextField(Context context) {
         super(context);
@@ -84,15 +74,6 @@ public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView imp
                     switch (attr) {
                         case R.styleable.FormTextField_hint:
                             hint = typedArray.getString(attr);
-                            break;
-                        case R.styleable.FormTextField_fieldType:
-                            fieldType = typedArray.getString(attr);
-                            break;
-                        case R.styleable.FormTextField_editable:
-                            editable = typedArray.getBoolean(attr, true);
-                            break;
-                        case R.styleable.FormTextField_mandatory:
-                            isMandatory = typedArray.getBoolean(attr, true);
                             break;
                     }
                 }
@@ -136,24 +117,16 @@ public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView imp
             }
             return false;
         });
-    }
 
-    public void setFieldType(String fieldType) {
-        this.fieldType = fieldType;
-        setUpFieldType();
-    }
+        setOnItemClickListener((parent, view, position, id) -> {
+            Search search = viewModel.getItemAt(position);
+            searchResultsListener.onSearchResultClicked(search);
+        });
 
-    private void setUpFieldType() {
-        switch (fieldType) {
-            case FIELD_TYPE_NUMBER:
-                binding.textField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
-                break;
-            case FIELD_TYPE_EMAIL:
-                binding.textField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                break;
-            case FIELD_TYPE_PASSWORD:
-                binding.textField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
-                break;
+        try {
+            searchResultsListener = (SearchResultsListener) getContext();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -185,29 +158,18 @@ public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView imp
         setAdapter(adapter);
     }
 
-    public void setData(String[] municipalitiesArray) {
-        viewModel.setAutoCompleteData(municipalitiesArray);
-    }
-
     public void searchAddress(String string) {
         subject.onNext(string);
     }
 
     @SuppressLint("CheckResult")
     private void initSearchSubject() {
-        subject.debounce(500, TimeUnit.MILLISECONDS)
+        subject.debounce(300, TimeUnit.MILLISECONDS)
                 .subscribe(viewModel::searchMovies);
     }
 
     public void hideKeyboard() {
-        //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        //View view = getContext().getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        //if (view == null) {
-        //   view = new View(getActivity());
-        // }
-        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        searchResultsListener.onSearch();
     }
 
     @Override
