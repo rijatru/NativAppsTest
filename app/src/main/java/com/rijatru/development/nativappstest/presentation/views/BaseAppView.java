@@ -7,11 +7,22 @@ import android.widget.FrameLayout;
 import com.rijatru.development.nativappstest.AppImplementation;
 import com.rijatru.development.nativappstest.dependencyInjection.component.DaggerViewsComponent;
 import com.rijatru.development.nativappstest.dependencyInjection.component.ViewsComponent;
+import com.rijatru.development.nativappstest.logic.Bus;
+import com.rijatru.development.nativappstest.logic.managers.interfaces.ApiManager;
+import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewModelsFactory;
+
+import javax.inject.Inject;
 
 public abstract class BaseAppView extends FrameLayout {
 
     private ViewsComponent component;
     protected Context context;
+
+    @Inject
+    ViewModelsFactory viewModelFactory;
+
+    @Inject
+    Bus bus;
 
     public BaseAppView(Context context) {
         super(context);
@@ -30,9 +41,21 @@ public abstract class BaseAppView extends FrameLayout {
 
     protected void init() {
         component = DaggerViewsComponent.builder().appComponent(AppImplementation.getApp().getAppComponent()).build();
+        component.inject(this);
     }
 
     protected ViewsComponent getComponent() {
         return component;
+    }
+
+    public void hideKeyboard() {
+        //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        //View view = getContext().getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        //if (view == null) {
+        //   view = new View(getActivity());
+        // }
+        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

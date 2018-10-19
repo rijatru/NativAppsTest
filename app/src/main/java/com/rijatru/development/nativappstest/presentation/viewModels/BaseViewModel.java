@@ -3,7 +3,10 @@ package com.rijatru.development.nativappstest.presentation.viewModels;
 import com.rijatru.development.nativappstest.AppImplementation;
 import com.rijatru.development.nativappstest.dependencyInjection.component.DaggerViewModelsComponent;
 import com.rijatru.development.nativappstest.dependencyInjection.component.ViewModelsComponent;
+import com.rijatru.development.nativappstest.logic.managers.interfaces.ApiManager;
 import com.rijatru.development.nativappstest.presentation.views.interfaces.AppView;
+
+import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -12,6 +15,9 @@ public abstract class BaseViewModel {
     private final AppView view;
     protected CompositeDisposable disposables;
     private ViewModelsComponent component;
+
+    @Inject
+    ApiManager apiManager;
 
     public BaseViewModel(AppView view) {
         this.view = view;

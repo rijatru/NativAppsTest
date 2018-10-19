@@ -26,5 +26,7 @@ public interface AutoCompleteFormTextFieldMvvm {
         void setHint(String hint);
 
         void setAutoCompleteData(String[] data);
+
+        void searchMovies(String searchQuery);
     }
 }

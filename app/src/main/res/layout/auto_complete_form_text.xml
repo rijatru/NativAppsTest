@@ -32,6 +32,7 @@
                 style="@style/FormTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
                 android:text="@={viewModel.value}" />
 
         </android.support.design.widget.TextInputLayout>

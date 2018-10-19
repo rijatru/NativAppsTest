@@ -9,4 +9,6 @@ public interface App {
     AppComponent getAppComponent();
 
     Context getApplicationContext();
+
+    String getString(int resourceId);
 }

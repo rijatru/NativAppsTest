@@ -1,14 +1,12 @@
 package com.rijatru.development.nativappstest.presentation.views.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.rijatru.development.nativappstest.presentation.views.utils.TextUtil;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
@@ -35,14 +33,9 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                if (constraint != null) {
-                    // Retrieve the autocomplete results.
-                    resultList = autocomplete(constraint.toString());
-
-                    // Assign the data to the FilterResults
-                    filterResults.values = resultList;
-                    filterResults.count = resultList.size();
-                }
+                resultList = new ArrayList<>(Arrays.asList(data));
+                filterResults.values = resultList;
+                filterResults.count = resultList.size();
                 return filterResults;
             }
 
@@ -57,19 +50,8 @@ public class CustomAutoCompleteAdapter extends ArrayAdapter<String> implements F
         };
     }
 
-    private ArrayList<String> autocomplete(String constraint) {
-        String comparableConstraint = TextUtil.stripAccents(constraint).replaceAll("\\s+", "");
-        ArrayList<String> result = new ArrayList<>();
-        for (String value : data) {
-            String comparableString = TextUtil.stripAccents(value).replaceAll("\\s+", "");
-            if (!TextUtils.isEmpty(comparableString) && comparableString.toLowerCase().contains(comparableConstraint.toLowerCase())) {
-                result.add(value);
-            }
-        }
-        return result;
-    }
-
     public void setData(String[] data) {
         this.data = data;
+        notifyDataSetChanged();
     }
 }

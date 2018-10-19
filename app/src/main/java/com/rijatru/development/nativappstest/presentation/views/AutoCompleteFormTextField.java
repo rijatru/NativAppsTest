@@ -1,28 +1,28 @@
 package com.rijatru.development.nativappstest.presentation.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.rijatru.development.nativappstest.R;
 import com.rijatru.development.nativappstest.databinding.AutoCompleteFormTextBinding;
-import com.rijatru.development.nativappstest.logic.Bus;
 import com.rijatru.development.nativappstest.presentation.viewModels.factories.AppViewModelsFactory;
-import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewModelsFactory;
 import com.rijatru.development.nativappstest.presentation.viewModels.interfaces.AutoCompleteFormTextFieldMvvm;
 import com.rijatru.development.nativappstest.presentation.views.adapters.TextWatcherAdapter;
 
-import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
 
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public class AutoCompleteFormTextField extends BaseAppView implements AutoCompleteFormTextFieldMvvm.View {
 
@@ -37,14 +37,8 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
 
     protected AutoCompleteFormTextBinding binding;
     private AutoCompleteFormTextFieldMvvm.ViewModel viewModel;
-    protected CompositeDisposable disposables;
     private TextWatcher textChangedListener;
-
-    @Inject
-    ViewModelsFactory viewModelFactory;
-
-    @Inject
-    Bus bus;
+    private Subject<String> subject = PublishSubject.create();
 
     public AutoCompleteFormTextField(Context context) {
         super(context);
@@ -95,7 +89,6 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
 
     protected void init(Context context) {
         if (!isInEditMode()) {
-            disposables = new CompositeDisposable();
             getComponent().inject(this);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             binding = DataBindingUtil.inflate(inflater, R.layout.auto_complete_form_text, this, true);
@@ -103,6 +96,7 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
             viewModel.setHint(hint);
             binding.setViewModel(viewModel);
             initListeners();
+            initSearchSubject();
         }
     }
 
@@ -110,15 +104,20 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
         textChangedListener = new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable editable) {
-                if (mandatoryAlertOn) {
-                    mandatoryAlertOn = false;
-                    Drawable drawable = getResources().getDrawable(R.drawable.form_text_field_rounded_outline);
-                    binding.formFieldContainer.setBackground(drawable);
-                    binding.textFieldContainer.setHintTextAppearance(R.style.TextLabelHint);
+                if (editable.toString().length() >= 0) {
+                    searchAddress(editable.toString());
                 }
             }
         };
         binding.textField.addTextChangedListener(textChangedListener);
+
+        binding.textField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard();
+                return true;
+            }
+            return false;
+        });
     }
 
     public void setFieldType(String fieldType) {
@@ -155,14 +154,9 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
         return binding.textField;
     }
 
-    public void setError(String error) {
-        binding.textFieldContainer.setError(error);
-    }
-
     @Override
     protected void onDetachedFromWindow() {
         binding.textField.removeTextChangedListener(textChangedListener);
-        disposables.clear();
         textChangedListener = null;
         super.onDetachedFromWindow();
     }
@@ -175,5 +169,15 @@ public class AutoCompleteFormTextField extends BaseAppView implements AutoComple
 
     public void setData(String[] municipalitiesArray) {
         viewModel.setAutoCompleteData(municipalitiesArray);
+    }
+
+    public void searchAddress(String string) {
+        subject.onNext(string);
+    }
+
+    @SuppressLint("CheckResult")
+    private void initSearchSubject() {
+        subject.debounce(500, TimeUnit.MILLISECONDS)
+                .subscribe(viewModel::searchMovies);
     }
 }
