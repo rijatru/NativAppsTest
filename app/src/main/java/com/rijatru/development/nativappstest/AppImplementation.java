@@ -11,7 +11,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class AppImplementation extends Application implements App {
+public class AppImplementation extends Application implements App {
 
     private static App app;
     private AppComponent appComponent;
