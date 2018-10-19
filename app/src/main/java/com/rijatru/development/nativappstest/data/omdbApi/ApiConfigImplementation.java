@@ -1,6 +1,7 @@
 package com.rijatru.development.nativappstest.data.omdbApi;
 
 import com.rijatru.development.nativappstest.App;
+import com.rijatru.development.nativappstest.R;
 
 public class ApiConfigImplementation implements ApiConfig {
 
@@ -12,6 +13,6 @@ public class ApiConfigImplementation implements ApiConfig {
 
     @Override
     public String getOmdbApiUrl() {
-        return null;
+        return app.getApplicationContext().getString(R.string.omdb_api_url);
     }
 }
