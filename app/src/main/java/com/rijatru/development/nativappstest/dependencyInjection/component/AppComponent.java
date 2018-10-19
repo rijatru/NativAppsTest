@@ -4,6 +4,7 @@ import com.rijatru.development.nativappstest.App;
 import com.rijatru.development.nativappstest.dependencyInjection.module.AppModule;
 import com.rijatru.development.nativappstest.dependencyInjection.module.DataModule;
 import com.rijatru.development.nativappstest.dependencyInjection.module.ViewsModule;
+import com.rijatru.development.nativappstest.logic.Bus;
 
 import javax.inject.Singleton;
 
@@ -14,4 +15,6 @@ import dagger.Component;
 public interface AppComponent {
 
     App app();
+
+    Bus bus();
 }
