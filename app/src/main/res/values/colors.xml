@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="formTextFieldOutlineColor">#B2B9C0</color>
+    <color name="formTextFieldTextColor">#7D7D7D</color>
 </resources>

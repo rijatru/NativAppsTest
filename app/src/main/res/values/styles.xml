@@ -1,11 +1,46 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextLabel" parent="Widget.Design.TextInputLayout">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/formTextFieldTextColor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_xlarge</item>
+        <item name="android:layout_marginStart">@dimen/dimen_xlarge</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/formTextFieldTextColor</item>
+        <item name="colorControlNormal">@color/formTextFieldTextColor</item>
+        <item name="colorControlActivated">@color/formTextFieldTextColor</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="errorTextAppearance">@style/TextInputErrorAppearance</item>
+    </style>
+
+    <style name="TextLabelHint" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/formTextFieldTextColor</item>
+    </style>
+
+    <style name="TextInputErrorAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/formTextFieldTextColor</item>
+        <item name="android:textSize">@dimen/text_tiny</item>
+    </style>
+
+    <style name="TextInputErrorAppearanceWhite" parent="TextInputErrorAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingStart">@dimen/dimen_large</item>
+    </style>
+
+    <style name="FormTextField">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:maxLength">200</item>
+        <item name="android:textColor">@color/formTextFieldTextColor</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:inputType">text</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

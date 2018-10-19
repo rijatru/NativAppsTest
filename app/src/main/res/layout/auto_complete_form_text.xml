@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rijatru.development.nativappstest.presentation.viewModels.interfaces.AutoCompleteFormTextFieldMvvm.ViewModel" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/form_field_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_marginEnd="@dimen/dimen_medium"
+        android:layout_marginStart="@dimen/dimen_medium"
+        android:layout_marginTop="@dimen/dimen_medium"
+        android:background="@drawable/form_text_field_rounded_outline">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_field_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_medium_s"
+            android:hint="@{viewModel.hint}"
+            android:theme="@style/TextLabel"
+            app:hintTextAppearance="@style/TextLabelHint">
+
+            <AutoCompleteTextView
+                android:id="@+id/text_field"
+                style="@style/FormTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.value}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </FrameLayout>
+
+</layout>

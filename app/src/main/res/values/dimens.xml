@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generic dimensions -->
+    <dimen name="dimen_invisible">0dp</dimen>
+    <dimen name="dimen_micro">0.5dp</dimen>
+    <dimen name="dimen_tiny">1dp</dimen>
+    <dimen name="dimen_smaller">2dp</dimen>
+    <dimen name="dimen_small_s">4dp</dimen>
+    <dimen name="dimen_small">6dp</dimen>
+    <dimen name="dimen_medium_s">8dp</dimen>
+    <dimen name="dimen_medium">16dp</dimen>
+    <dimen name="dimen_large">19dp</dimen>
+    <dimen name="dimen_xlarge">23dp</dimen>
+    <dimen name="dimen_xxlarge">56dp</dimen>
+    <dimen name="dimen_xxxlarge">60dp</dimen>
+    <dimen name="dimen_xxxxlarge">70dp</dimen>
+
+    <dimen name="text_micro">8sp</dimen>
+    <dimen name="text_tiny">12sp</dimen>
+    <dimen name="text_smaller">14sp</dimen>
+    <dimen name="text_small">17sp</dimen>
+    <dimen name="text_medium">21sp</dimen>
+    <dimen name="text_large">23sp</dimen>
+    <dimen name="text_xlarge">24sp</dimen>
+    <dimen name="text_huge">26sp</dimen>
+    <dimen name="text_larger">28sp</dimen>
+
+    <!-- Functional dimensions -->o
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_elevation">6dp</dimen>
+</resources>

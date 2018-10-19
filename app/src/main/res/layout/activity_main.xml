@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.rijatru.development.nativappstest.presentation.viewModels.interfaces.MainViewMvvm.ViewModel" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/toolbar_elevation">
 
-    </FrameLayout>
+            <com.rijatru.development.nativappstest.presentation.views.AutoCompleteFormTextField
+                android:id="@+id/municipality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_medium"
+                app:editable="false"
+                app:hint="@string/search_hint"
+                app:mandatory="true"
+                app:value="@={viewModel.searchQuery}" />
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </layout>

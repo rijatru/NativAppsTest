@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FormTextField">
+        <attr name="value" format="string" />
+        <attr name="hint" format="string" />
+        <attr name="field_type" format="string" />
+        <attr name="editable" format="boolean" />
+        <attr name="mandatory" format="boolean" />
+        <attr name="fieldType" format="string" />
+    </declare-styleable>
+</resources>

@@ -8,6 +8,9 @@ import com.rijatru.development.nativappstest.dependencyInjection.module.ViewsMod
 import com.rijatru.development.nativappstest.logic.Bus;
 import com.rijatru.development.nativappstest.logic.managers.interfaces.ApiManager;
 import com.rijatru.development.nativappstest.logic.managers.interfaces.HttpManager;
+import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ListAdapterFactory;
+import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewModelsFactory;
+import com.rijatru.development.nativappstest.presentation.viewModels.factories.interfaces.ViewsFactory;
 
 import javax.inject.Singleton;
 
@@ -26,4 +29,10 @@ public interface AppComponent {
     ApiManager apiManager();
 
     Serializer serializationManager();
+
+    ViewsFactory viewFactory();
+
+    ViewModelsFactory viewModeFactory();
+
+    ListAdapterFactory listAdapterFactory();
 }

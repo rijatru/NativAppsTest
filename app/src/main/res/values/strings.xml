@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NativAppsTest</string>
     <string name="omdb_api_url">https://www.omdbapi.com</string>
+    <string name="search_hint">Search movies</string>
 </resources>
