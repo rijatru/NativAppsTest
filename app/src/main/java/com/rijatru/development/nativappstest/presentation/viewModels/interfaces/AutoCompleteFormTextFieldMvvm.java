@@ -31,5 +31,7 @@ public interface AutoCompleteFormTextFieldMvvm {
         void searchMovies(String searchQuery);
 
         Search getItemAt(int position);
+
+        void clearSubscriptions();
     }
 }

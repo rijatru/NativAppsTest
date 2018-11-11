@@ -1,5 +1,7 @@
 package com.rijatru.development.nativappstest.data.serialization;
 
+import android.util.Log;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,7 +32,15 @@ public class GsonManager<T> implements Serializer {
                 .serializeNulls()
                 .create();
 
-        return gson.fromJson(objectString, classType);
+        Object object = null;
+
+        try {
+            object = gson.fromJson(objectString, classType);
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), e.getMessage());
+        }
+
+        return object;
     }
 
     public Object fromJson(String objectString, Type classType) {

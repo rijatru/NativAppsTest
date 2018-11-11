@@ -149,6 +149,7 @@ public class AutoCompleteFormTextField extends AppCompatAutoCompleteTextView imp
     protected void onDetachedFromWindow() {
         removeTextChangedListener(textChangedListener);
         textChangedListener = null;
+        viewModel.clearSubscriptions();
         super.onDetachedFromWindow();
     }
 
